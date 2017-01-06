@@ -89,12 +89,7 @@ main (int argc, const char **argv)
 	  //-- 3. Apply the classifier to the frame
 	  if (!frame.empty ())
 	    {
-#if 1
-	      imshow (window_name, frame);
-	      fprintf(stderr, ".");
-#else
 	      detectAndDisplay (frame);
-#endif
 	    }
 	  else
 	    {
