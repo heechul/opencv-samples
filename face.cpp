@@ -6,6 +6,8 @@
 #include <iostream>
 #include <stdio.h>
 
+#define USE_DISP 0
+
 using namespace std;
 using namespace cv;
 using namespace cv::gpu;
@@ -46,21 +48,18 @@ main (int argc, const char **argv)
   CvCapture *    capture;
   Mat    frame;
 
-  fprintf(stderr, ".");
   //-- 1. Load the cascades
   if (!face_cascade.load (face_cascade_name))
     {
       printf ("--(!)Error loading\n");
       return -1;
     };
-  fprintf(stderr, ".");  
   if (!eyes_cascade.load (eyes_cascade_name))
     {
       printf ("--(!)Error loading\n");
       return -1;
     };
 
-  fprintf(stderr, "gpu\n");
 
   if (!face_cascade_gpu.load (face_cascade_name))
     {
@@ -68,17 +67,18 @@ main (int argc, const char **argv)
       return -1;
     };
 
-  fprintf(stderr, ".");
   if (!eyes_cascade_gpu.load (eyes_cascade_name))
     {
       printf ("--(!)Error loading\n");
       return -1;
     };
 
-  fprintf(stderr, ".");
   //-- 2. Read the video stream
+#if 0
   capture = cvCaptureFromCAM (-1);
-  fprintf(stderr, "cam\n");  
+#else
+  capture = cvCaptureFromFile(argv[1]);
+#endif
   if (capture)
     {
       while (true)
@@ -93,7 +93,7 @@ main (int argc, const char **argv)
 	    }
 	  else
 	    {
-	      printf (" --(!) No captured frame -- Break!");
+	      // printf (" --(!) No captured frame -- Break!");
 	      break;
 	    }
 
@@ -225,13 +225,17 @@ detectAndDisplay (Mat frame)
 	   Scalar (255, 0, 255), 2);
 
   s.str ("");
-  s << "total FPS: " << (getTickFrequency () / (t1 - t0));
+  float fps = (getTickFrequency () / (t1 - t0));
+  s << "total FPS: " << fps;
   putText (frame, s.str (), Point (5, 105), FONT_HERSHEY_SIMPLEX, 1.,
 	   Scalar (255, 0, 255), 2);
 
+  cout << fps << " " << (float)(tc1 - tc0)/1000000 << " " << (float)(t1 - t0)/1000000 << endl;
+
+#if USE_DISP==1
   //-- Show what you got
   imshow (window_name, frame);
-
+#endif
   char
     ch = (char) waitKey (3);
   if (ch == 'm' || ch == 'M')

@@ -7,6 +7,8 @@
 #include "opencv2/gpu/gpu.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
+#define USE_NODRAW 0
+
 using namespace std;
 using namespace cv;
 
@@ -321,6 +323,7 @@ void App::run()
                                           Size(0, 0), scale, gr_threshold);
             hogWorkEnd();
 
+#ifndef USE_NODRAW
             // Draw positive classified windows
             for (size_t i = 0; i < found.size(); i++)
             {
@@ -334,6 +337,7 @@ void App::run()
                 putText(img_to_show, "Mode: CPU", Point(5, 25), FONT_HERSHEY_SIMPLEX, 1., Scalar(255, 100, 0), 2);
             putText(img_to_show, "FPS (HOG only): " + hogWorkFps(), Point(5, 65), FONT_HERSHEY_SIMPLEX, 1., Scalar(255, 100, 0), 2);
             putText(img_to_show, "FPS (total): " + workFps(), Point(5, 105), FONT_HERSHEY_SIMPLEX, 1., Scalar(255, 100, 0), 2);
+#endif	    
             imshow("opencv_gpu_hog", img_to_show);
 
             if (args.src_is_video || args.src_is_camera) vc >> frame;
