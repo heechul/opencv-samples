@@ -1,4 +1,4 @@
-all: edge face flow
+all: edge face flow hog
 
 edge: edge.cpp
 	$(CXX) $< -o $@ `pkg-config opencv --cflags --libs`
@@ -16,4 +16,4 @@ flow-cpu: flow-cpu.cpp
 	$(CXX) $< -o $@ `pkg-config opencv --cflags --libs`
 
 clean:
-	rm edge face flow
+	rm edge face flow hog *~
