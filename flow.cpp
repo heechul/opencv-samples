@@ -57,8 +57,9 @@ static void colorizeFlow(const Mat &u, const Mat &v, Mat &dst)
 
 int main(int argc, char **argv)
 {
-    VideoCapture cap(0);
-    if( !cap.isOpened() )
+  VideoCapture cap(argv[1]);
+
+  if( !cap.isOpened() )
         return -1;
     // cap.set(CV_CAP_PROP_FRAME_WIDTH, 360);
     // cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
@@ -76,7 +77,7 @@ int main(int argc, char **argv)
 #endif
     Mat flowxy, flowx, flowy, image;
 
-    bool running = true, gpuMode = false;
+    bool running = true, gpuMode = true;
     int64 t, t0=0, t1=1, tc0, tc1;
 
     cout << "Use 'm' for CPU/GPU toggling\n";

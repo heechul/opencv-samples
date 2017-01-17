@@ -6,7 +6,8 @@
 #include <iostream>
 #include <stdio.h>
 
-#define USE_DISP 0
+#define USE_CAMERA 1
+#define USE_DISP 1
 
 using namespace std;
 using namespace cv;
@@ -74,7 +75,7 @@ main (int argc, const char **argv)
     };
 
   //-- 2. Read the video stream
-#if 0
+#if USE_CAMERA==1
   capture = cvCaptureFromCAM (-1);
 #else
   capture = cvCaptureFromFile(argv[1]);
